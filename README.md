@@ -1,4 +1,3 @@
 # mRosalind
-The solution to some of the Rosalind challenges I solved.
-
-This is some of the very first code I wrote, so expect some of the code to be rather convoluted and inelegant.
+The solutions to some of the Rosalind challenges I solved.
+I wrote the code for the solutions to some of the first problems when I was just beginning to learn Python and programming, so some of the code might be rather convoluted and inelegant.
