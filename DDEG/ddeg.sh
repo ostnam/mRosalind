@@ -1,5 +1,5 @@
 #!/bin/bash
-# this solution is correct but does not scale to large file
+# this solution is correct but does not scale to large files
 
 result=""
 edge_list=$(
