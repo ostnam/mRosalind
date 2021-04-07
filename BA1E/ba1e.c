@@ -22,7 +22,7 @@
  *	-> a simpler hash function would also probably work
  * 	-> optimizing the hash table parameters (such as # of bins)
  * 3. I cannot guarantee that memory management is optimal and no memory is left
- *    unreleased *
+ *    unreleased
  */
 
 #include <stdio.h>
