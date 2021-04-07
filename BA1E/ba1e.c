@@ -33,8 +33,8 @@
 unsigned long hash(char *str) {
     unsigned long hash = 5381;
     int c;
-    while (c = *str++)
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+    while ((c = *str++))
+        hash = ((hash << 5) + hash) + c;
 
     return hash;
 } // hash function courtesy of http://www.cse.yorku.ca/~oz/hash.html
@@ -83,12 +83,12 @@ Entry * Entry_new(char* string) {
 }
 
 Entry * get_bucket(Hashmap *target, char *value) {
-	unsigned value_hash = hash(value) % (target->bucket_count); // add +1?
+	unsigned value_hash = hash(value) % (target->bucket_count);
 	return target->buckets[value_hash];
 }
 
 unsigned get_hash(Hashmap *target, char* value) {
-	unsigned value_hash = hash(value) % (target->bucket_count); // add +1?
+	unsigned value_hash = hash(value) % (target->bucket_count);
 	return value_hash;
 }
 
@@ -132,10 +132,10 @@ int Hashmap_increment(Hashmap *target, char *value) {
 }
 void Entry_free(Entry* target) {
 	if (target != NULL) {
-		free(target);
 		if (target->content != NULL) {
 			free(target->content);
 		}
+		free(target);
 	}
 }
 
@@ -193,9 +193,9 @@ int main(void) {
 	scanf("%d %d %d", &k, &l, &t);
 	Hashmap *result = Hashmap_new(32);
 	
-	for (int i = 0; i <= p_len - l; i++) {
+	for (int i = 0; i <= p_len - l; i++) {      // for each substring of Pattern
 		Hashmap *count = Hashmap_new(128);
-		for (int j = 0; j <= l - k; j++) {
+		for (int j = 0; j <= l - k; j++) {  
 			char *current_kmer = get_kmer(pattern, i+j, k);
 			if (! Hashmap_includes(result, current_kmer)) {
 				int times_seen = Hashmap_increment(count, current_kmer); 
