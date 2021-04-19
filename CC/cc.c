@@ -11,13 +11,13 @@ typedef struct Node {
 } Node;
 
 /*
- * This struct permits storing and receiving the edges of each node.
+ * This struct stores and returns the edges of each node.
  */
 typedef struct ConnectVec {
 	size_t len;
 	size_t capacity;
 	size_t needle;		// used to retain position while iterating
-	Node **arr;
+	Node **arr;		
 } ConnectVec;
 
 ConnectVec *ConnectVecNew(void) {
@@ -85,7 +85,7 @@ bool all_true(bool *arr, size_t len) {
 		}
 	}
 	return true;
-}
+} // check if all the values of a bool array are true
 
 int first_not_visited(bool *arr) {
 	size_t x = 0;
@@ -96,7 +96,9 @@ int first_not_visited(bool *arr) {
 			++x;
 		}
 	}
-}
+} // returns the first non-true value in a bool array
+  // /!\ unsafe and will overflow the array if it is all true
+  // only used after all_true() in this program so it's safe
 
 
 
@@ -129,6 +131,7 @@ NodeLL *NodeLLPop (NodeLL *target) {
 NodeLL *NodeLLPush(NodeLL *target, Node* node) {
 	target->next = NodeLLNew(node);
 	target->next->previous = target;
+	return target->next;
 }
 
 
@@ -157,24 +160,24 @@ int main(void) {
 			printf("%d\n", components);
 			return 0;
 		} else {
-			curr_node_nb += first_not_visited(&visited_nodes[curr_node_nb+1]) + 1;
-			visited_nodes[curr_node_nb] = true;
-			NodeLL *search_list = NodeLLNew(curr_graph->nodes[curr_node_nb-1]);
+			curr_node_nb += first_not_visited(&visited_nodes[curr_node_nb+1]) + 1;   // Current node is the first next non-visited.
+			visited_nodes[curr_node_nb] = true;					 // Current node is now visited.
+			NodeLL *search_list = NodeLLNew(curr_graph->nodes[curr_node_nb-1]);      // Initiate a search list at the current node.
 			while (true) {
-				Node *x = ConnectVecYield(search_list->node->conn_vec);
-				if (x == NULL) {
-					if (search_list->previous == NULL) {
-						break;
+				Node *x = ConnectVecYield(search_list->node->conn_vec);          // Yield a connection from the connect vector.
+				if (x == NULL) {						 // Result is null if the function has yielded every connection.
+					if (search_list->previous == NULL) {			 // If we are at the root of the search list,
+						break;						 // start a new one at the next non-visited node.
 					} else {
-						search_list = NodeLLPop(search_list);
-						continue;
+						search_list = NodeLLPop(search_list);            // We have visited every node from the current edge,
+						continue;	                                 // so we move back in the search.
 					}
 				} else {
-					if (visited_nodes[x->number]) {
+					if (visited_nodes[x->number]) {                          // If we have visited that node, ignore it.
 						continue;
 					} else {
-						visited_nodes[x->number] = true;
-						search_list = NodeLLPush(search_list, x);
+						visited_nodes[x->number] = true;		 // If we haven't, we visit it,
+						search_list = NodeLLPush(search_list, x);	 // and push it to the list.
 					}
 			}
 		}
