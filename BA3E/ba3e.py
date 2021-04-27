@@ -1,17 +1,12 @@
 from sys import stdin
-k = int(stdin.readline().strip())
-text = stdin.readline().strip()
-kmers = {text[i:i+k-1] for i in range(len(text)-k+2)}
-result = dict()
+kmers = [i.strip() for i in stdin]
+result = {i[:-1]: [] for i in kmers}
 for i in kmers:
-    current = set()
-    for j in kmers:
-        if i[1:] == j[:-1]:
-            current.add(j)
-    if len(current) != 0:
-        result[i] = current
+    result[i[:-1]].append(i[1:])
 
 for (key, val) in result.items():
+    if len(val) == 0:
+        continue
     if len(val) == 1:
         print(key, "->", val.pop(), end="")
     else:
